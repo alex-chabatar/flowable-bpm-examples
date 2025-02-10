@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/flowableDB
+    username: postgres
+    password: postgres
+  application:
+    name: flowable-bpm-test
