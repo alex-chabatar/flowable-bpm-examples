@@ -1,30 +1,34 @@
 package org.flowable.bpm.examples.springboot.process.test.bpmn;
 
-import static com.tngtech.java.junit.dataprovider.DataProviders.$;
-import static com.tngtech.java.junit.dataprovider.DataProviders.$$;
 import static org.flowable.bpm.examples.springboot.WorkflowParameters.*;
 import static org.flowable.bpm.examples.springboot.process.test.TestDataProvider.*;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.flowable.bpm.examples.springboot.process.scenario.ProcessGiven;
 import org.flowable.bpm.examples.springboot.process.scenario.ProcessThen;
 import org.flowable.bpm.examples.springboot.process.scenario.ProcessWhen;
 import org.flowable.bpm.examples.springboot.spring.AbstractSpringTest;
-import org.junit.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Map;
+import java.util.stream.Stream;
 
 @SuppressWarnings("squid:S2699") // Tests should include assertions
 public class ReviewDocumentTest extends AbstractSpringTest<ProcessGiven<?>, ProcessWhen<?>, ProcessThen<?>> {
 
-    @DataProvider
-    public static Object[][] model() {
-        return $$($(ALEX), $(YAO), $(ZACK), $(JAREK));
+    public static Stream<Arguments> model() {
+        return Stream.of(
+            arguments(ALEX),
+            arguments(YAO),
+            arguments(ZACK),
+            arguments(JAREK)
+        );
     }
 
-    @Test
-    @UseDataProvider("model")
+    @ParameterizedTest
+    @MethodSource("model")
     public void ensureDocumentReviewed(String reviewer) {
 
         Map<String, Object> model = reviewDocumentModel(document(), reviewer);

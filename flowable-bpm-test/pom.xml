@@ -69,15 +69,7 @@
         <!-- BDD (jGiven) -->
         <dependency>
             <groupId>com.tngtech.jgiven</groupId>
-            <artifactId>jgiven-spring-junit4</artifactId>
-            <version>${jgiven.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.tngtech.java</groupId>
-            <artifactId>junit-dataprovider</artifactId>
-            <version>${jgiven-dataprovider.version}</version>
-            <scope>test</scope>
+            <artifactId>jgiven-spring-junit5</artifactId>
         </dependency>
 
     </dependencies>

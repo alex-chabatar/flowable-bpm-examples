@@ -6,7 +6,7 @@ import org.flowable.bpm.examples.springboot.process.scenario.ProcessGiven;
 import org.flowable.bpm.examples.springboot.process.scenario.ProcessThen;
 import org.flowable.bpm.examples.springboot.process.scenario.ProcessWhen;
 import org.flowable.bpm.examples.springboot.spring.AbstractSpringTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("squid:S2699") // Tests should include assertions
 public class DeploymentTest extends AbstractSpringTest<ProcessGiven<?>, ProcessWhen<?>, ProcessThen<?>> {
