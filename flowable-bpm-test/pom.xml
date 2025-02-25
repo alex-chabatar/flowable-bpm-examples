@@ -34,6 +34,12 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Database -->
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -104,13 +110,5 @@
         </plugins>
 
     </build>
-
-    <repositories>
-        <repository>
-            <id>jboss</id>
-            <name>jboss repo</name>
-            <url>https://repository.jboss.org/</url>
-        </repository>
-    </repositories>
 
 </project>
