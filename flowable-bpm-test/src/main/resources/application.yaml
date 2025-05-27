@@ -5,3 +5,8 @@ spring:
     password: postgres
   application:
     name: flowable-bpm-test
+
+flowable:
+  auto-deployment:
+    use-lock: true # default is off
+    lock-wait-time: 5m # default

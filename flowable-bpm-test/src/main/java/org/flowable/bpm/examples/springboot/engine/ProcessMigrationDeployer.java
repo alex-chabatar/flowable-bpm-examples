@@ -1,0 +1,68 @@
+package org.flowable.bpm.examples.springboot.engine;
+
+import static java.util.Collections.emptyList;
+import static java.util.Comparator.comparingInt;
+
+import java.util.Map;
+
+import java.util.Optional;
+import org.flowable.common.engine.api.repository.EngineDeployment;
+import org.flowable.common.engine.impl.EngineDeployer;
+
+import lombok.extern.slf4j.Slf4j;
+import org.flowable.engine.ProcessMigrationService;
+import org.flowable.engine.RuntimeService;
+import org.flowable.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.flowable.engine.impl.persistence.entity.DeploymentEntityImpl;
+import org.flowable.engine.repository.ProcessDefinition;
+import org.flowable.engine.runtime.ProcessInstance;
+
+@Slf4j
+public class ProcessMigrationDeployer implements EngineDeployer {
+
+  @Override
+  public void deploy(EngineDeployment deployment, Map<String, Object> deploymentSettings) {
+
+    if (deployment == null || !deployment.isNew()) {
+      return; // null or already processed...
+    }
+
+    Optional.ofNullable(((DeploymentEntityImpl) deployment).getDeployedArtifacts(ProcessDefinition.class)).orElse(emptyList())
+      .forEach(processDefinition -> {
+        var processDefinitionKey = processDefinition.getKey();
+        var targetProcessDefinitionId = processDefinition.getId();
+        var processDefinitionIdsToMigrate = runtimeService().createProcessInstanceQuery()
+          .processDefinitionKey(processDefinitionKey)
+          .list().stream()
+          .sorted(comparingInt(ProcessInstance::getProcessDefinitionVersion).reversed())
+          .map(ProcessInstance::getProcessDefinitionId)
+          .toList();
+        processDefinitionIdsToMigrate.forEach(sourceProcessDefinitionId -> {
+          try {
+            var migrationPlan = processMigrationService().createProcessInstanceMigrationBuilder()
+                    .migrateToProcessDefinition(targetProcessDefinitionId);
+            var batch = migrationPlan.batchMigrateProcessInstances(sourceProcessDefinitionId);
+            log.info("Scheduled a batch '{}' to migrate '{}' process instances of '{}' to '{}'",
+                    batch.getId(), processDefinitionIdsToMigrate, sourceProcessDefinitionId, targetProcessDefinitionId);
+          } catch (Exception ex) {
+            log.error("Process Migration failed for process definition '{}': {}",
+                    targetProcessDefinitionId, ex.getMessage(), ex);
+          }
+        });
+      });
+
+  }
+
+  private ProcessEngineConfigurationImpl processEngineConfiguration() {
+    return org.flowable.engine.impl.context.Context.getProcessEngineConfiguration();
+  }
+
+  private RuntimeService runtimeService() {
+    return processEngineConfiguration().getRuntimeService();
+  }
+
+  private ProcessMigrationService processMigrationService() {
+    return processEngineConfiguration().getProcessMigrationService();
+  }
+
+}

@@ -1,12 +1,13 @@
 package org.flowable.bpm.examples.springboot.engine;
 
+import java.util.ArrayList;
 import org.flowable.spring.SpringProcessEngineConfiguration;
 import org.flowable.spring.boot.EngineConfigurationConfigurer;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class MyConfigurer implements EngineConfigurationConfigurer<SpringProcessEngineConfiguration> {
+public class CustomEngineConfigurer implements EngineConfigurationConfigurer<SpringProcessEngineConfiguration> {
 
   public void configure(SpringProcessEngineConfiguration processEngineConfiguration) {
 
@@ -15,9 +16,9 @@ public class MyConfigurer implements EngineConfigurationConfigurer<SpringProcess
 
     // deployers
     if (processEngineConfiguration.getCustomPostDeployers() == null) {
-      processEngineConfiguration.setCustomPostDeployers(new java.util.ArrayList<>());
+      processEngineConfiguration.setCustomPostDeployers(new ArrayList<>());
     }
-    processEngineConfiguration.getCustomPostDeployers().add(new MyDeployer());
+    processEngineConfiguration.getCustomPostDeployers().add(new ProcessMigrationDeployer());
 
   }
 
