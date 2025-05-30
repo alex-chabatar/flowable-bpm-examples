@@ -14,6 +14,12 @@ public class CustomEngineConfigurer implements EngineConfigurationConfigurer<Spr
     // advanced configuration
     log.info("Configuring process engine {}", processEngineConfiguration);
 
+    // event listeners
+    if (processEngineConfiguration.getEventListeners() == null) {
+      processEngineConfiguration.setEventListeners(new ArrayList<>());
+    }
+    processEngineConfiguration.getEventListeners().add(new BatchCompletedListener());
+
     // deployers
     if (processEngineConfiguration.getCustomPostDeployers() == null) {
       processEngineConfiguration.setCustomPostDeployers(new ArrayList<>());
