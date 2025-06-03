@@ -21,7 +21,7 @@ import org.flowable.engine.impl.util.CommandContextUtil;
 import org.flowable.job.service.impl.persistence.entity.JobEntity;
 
 @Slf4j
-public class BatchCompletedListener extends AbstractFlowableEngineEventListener {
+public class ProcessMigrationListener extends AbstractFlowableEngineEventListener {
 
     private static final Set<String> JOB_HANDLER_TYPES = Set.of(ProcessInstanceMigrationStatusJobHandler.TYPE);
 
