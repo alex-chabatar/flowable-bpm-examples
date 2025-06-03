@@ -11,6 +11,7 @@ import org.flowable.common.engine.impl.EngineDeployer;
 import org.flowable.engine.ProcessMigrationService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.flowable.engine.impl.context.Context;
 import org.flowable.engine.impl.persistence.entity.DeploymentEntityImpl;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
@@ -52,7 +53,7 @@ public class ProcessMigrationDeployer implements EngineDeployer {
     }
 
     private ProcessEngineConfigurationImpl processEngineConfiguration() {
-        return org.flowable.engine.impl.context.Context.getProcessEngineConfiguration();
+        return Context.getProcessEngineConfiguration();
     }
 
     private RuntimeService runtimeService() {
