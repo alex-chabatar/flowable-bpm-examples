@@ -52,16 +52,26 @@ public class ProcessMigrationDeployer implements EngineDeployer {
 
     }
 
-    private ProcessEngineConfigurationImpl processEngineConfiguration() {
-        return Context.getProcessEngineConfiguration();
-    }
+  @Override
+  public void undeploy(EngineDeployment parentDeployment, boolean cascade) {
+    // do nothing
+  }
 
-    private RuntimeService runtimeService() {
-        return processEngineConfiguration().getRuntimeService();
-    }
+  @Override
+  public int getUndeployOrder() {
+    return EngineDeployer.super.getUndeployOrder();
+  }
 
-    private ProcessMigrationService processMigrationService() {
-        return processEngineConfiguration().getProcessMigrationService();
-    }
+  private ProcessEngineConfigurationImpl processEngineConfiguration() {
+    return Context.getProcessEngineConfiguration();
+  }
+
+  private RuntimeService runtimeService() {
+    return processEngineConfiguration().getRuntimeService();
+  }
+
+  private ProcessMigrationService processMigrationService() {
+    return processEngineConfiguration().getProcessMigrationService();
+  }
 
 }
