@@ -3,6 +3,7 @@ package org.flowable.bpm.examples.springboot.utils;
 import static java.util.stream.Collectors.toList;
 
 import org.apache.commons.lang3.StringUtils;
+import org.flowable.dmn.api.DmnDecisionService;
 import org.flowable.engine.*;
 import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.history.HistoricProcessInstance;
@@ -42,6 +43,8 @@ public class WorkflowHelper {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private DmnDecisionService decisionService;
 
     @Autowired
     private ManagementService managementService;
@@ -407,6 +410,15 @@ public class WorkflowHelper {
 
     public void removeVariable(String executionId, String name) {
         runtimeService.removeVariable(executionId, name);
+    }
+
+    // -- Decisions
+
+    public List<Map<String, Object>> evaluateDecision(String decisionKey, Map<String, Object> variables) {
+        return decisionService.createExecuteDecisionBuilder()
+            .decisionKey(decisionKey)
+            .variables(variables)
+            .executeDecision();
     }
 
     // -- Activities
